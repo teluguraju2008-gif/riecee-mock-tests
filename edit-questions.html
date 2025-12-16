@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Edit Questions | Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family:Arial, sans-serif;
+  background:#f4f6f9;
+  padding:20px;
+}
+.container{
+  max-width:800px;
+  margin:auto;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+textarea{
+  width:100%;
+  height:300px;
+  font-family:monospace;
+}
+button{
+  margin-top:15px;
+  padding:10px 16px;
+  background:#004aad;
+  color:white;
+  border:none;
+  border-radius:6px;
+}
+.note{
+  color:red;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Admin – Edit Questions (Demo)</h2>
+
+<p>Paste and edit your <b>questions array</b> below:</p>
+
+<textarea>
+const questions = [
+ {q:"Sample Question?", o:["A","B","C","D"], a:0}
+];
+</textarea>
+
+<button disabled>Save (Demo Only)</button>
+
+<p class="note">
+⚠️ GitHub Pages is static hosting.<br>
+Changes here will NOT save automatically.<br><br>
+👉 To actually edit questions:<br>
+• Open <b>mocktest1.html</b><br>
+• Replace the questions array<br>
+• Upload again to GitHub
+</p>
+
+</div>
+
+</body>
+</html>

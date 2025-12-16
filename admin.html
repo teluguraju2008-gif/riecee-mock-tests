@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Login | RIE CEE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#eef3ff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+.box{
+  background:white;
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  width:300px;
+  text-align:center;
+}
+input{
+  width:90%;
+  padding:10px;
+  margin:10px 0;
+}
+button{
+  background:#004aad;
+  color:white;
+  border:none;
+  padding:10px 15px;
+  border-radius:6px;
+  cursor:pointer;
+}
+button:hover{background:#00327a;}
+#error{color:red;}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Admin Login</h2>
+
+  <input type="text" id="user" placeholder="Username">
+  <input type="password" id="pass" placeholder="Password">
+  <button onclick="login()">Login</button>
+
+  <p id="error"></p>
+</div>
+
+<script>
+function login(){
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+
+  if(u === "admin" && p === "rie2026"){
+    window.location.href = "edit-questions.html";
+  } else {
+    document.getElementById("error").innerText = "Wrong username or password";
+  }
+}
+</script>
+
+</body>
+</html>
