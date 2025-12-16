@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock Test 1 – General Awareness | RIE CEE 2026</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f9;
+        margin: 0;
+        padding: 20px;
+    }
+    .container {
+        max-width: 700px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+        text-align: center;
+        color: #0057b7;
+    }
+    .question {
+        margin-bottom: 20px;
+    }
+    button {
+        background: #0057b7;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    button:hover {
+        background: #003f87;
+    }
+    #result {
+        font-size: 22px;
+        margin-top: 20px;
+        font-weight: bold;
+        color: #0057b7;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Mock Test 1 – General Awareness</h1>
+
+    <div id="quiz"></div>
+
+    <button onclick="submitQuiz()">Submit Test</button>
+
+    <p id="result"></p>
+</div>
+
+<script>
+const quizData = [
+    {
+        question: "1. Who is known as the Father of the Indian Constitution?",
+        a: "Dr. B.R. Ambedkar",
+        b: "Jawaharlal Nehru",
+        c: "Mahatma Gandhi",
+        d: "Sardar Patel",
+        correct: "a"
+    },
+    {
+        question: "2. The capital of Andhra Pradesh is?",
+        a: "Hyderabad",
+        b: "Vishakhapatnam",
+        c: "Amaravati",
+        d: "Kurnool",
+        correct: "c"
+    },
+    {
+        question: "3. Which planet is known as the Red Planet?",
+        a: "Earth",
+        b: "Mars",
+        c: "Venus",
+        d: "Jupiter",
+        correct: "b"
+    },
+    {
+        question: "4. Who wrote the National Anthem of India?",
+        a: "Bankim Chandra Chatterjee",
+        b: "Subhash Chandra Bose",
+        c: "Rabindranath Tagore",
+        d: "Sarojini Naidu",
+        correct: "c"
+    },
+    {
+        question: "5. The largest ocean in the world is?",
+        a: "Atlantic Ocean",
+        b: "Indian Ocean",
+        c: "Pacific Ocean",
+        d: "Arctic Ocean",
+        correct: "c"
+    },
+    {
+        question: "6. Which is the national bird of India?",
+        a: "Sparrow",
+        b: "Peacock",
+        c: "Parrot",
+        d: "Eagle",
+        correct: "b"
+    },
+    {
+        question: "7. Who discovered India in 1498?",
+        a: "Christopher Columbus",
+        b: "Marco Polo",
+        c: "Vasco da Gama",
+        d: "Ferdinand Magellan",
+        correct: "c"
+    },
+    {
+        question: "8. Which is the longest river in India?",
+        a: "Ganga",
+        b: "Yamuna",
+        c: "Godavari",
+        d: "Brahmaputra",
+        correct: "a"
+    },
+    {
+        question: "9. Which festival is known as the Festival of Lights?",
+        a: "Holi",
+        b: "Diwali",
+        c: "Pongal",
+        d: "Eid",
+        correct: "b"
+    },
+    {
+        question: "10. Which currency is used in Japan?",
+        a: "Yuan",
+        b: "Won",
+        c: "Dollar",
+        d: "Yen",
+        correct: "d"
+    }
+];
+
+let quizHTML = "";
+quizData.forEach((q, index) => {
+    quizHTML += `
+        <div class="question">
+            <p><strong>${q.question}</strong></p>
+            <label><input type="radio" name="q${index}" value="a"> ${q.a}</label><br>
+            <label><input type="radio" name="q${index}" value="b"> ${q.b}</label><br>
+            <label><input type="radio" name="q${index}" value="c"> ${q.c}</label><br>
+            <label><input type="radio" name="q${index}" value="d"> ${q.d}</label>
+        </div>
+    `;
+});
+
+document.getElementById("quiz").innerHTML = quizHTML;
+
+function submitQuiz() {
+    let score = 0;
+
+    quizData.forEach((q, index) => {
+        let answer = document.querySelector(`input[name="q${index}"]:checked`);
+        if (answer && answer.value === q.correct) {
+            score++;
+        }
+    });
+
+    document.getElementById("result").innerText = `Your Score: ${score} / 10`;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mock Test 4 - Language Proficiency</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #0057b7;
+      color: white;
+      padding: 16px;
+      text-align: center;
+    }
+    #timer {
+      font-size: 18px;
+      font-weight: bold;
+      background: #003f87;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+    .container {
+      max-width: 700px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .btn {
+      background: #0057b7;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      margin: 10px 4px;
+    }
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .option {
+      padding: 10px;
+      background: #f0f4ff;
+      border-radius: 8px;
+      margin: 8px 0;
+    }
+    #resultBox {
+      display: none;
+      padding: 20px;
+      background: #e8ffe6;
+      border: 2px solid #21a421;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>Mock Test 4 – Language Proficiency</h2>
+</header>
+
+<div id="timer">Time Left: <span id="time">30:00</span></div>
+
+<div class="container">
+  <h3 id="qNo"></h3>
+  <p id="question"></p>
+
+  <div id="options"></div>
+
+  <button class="btn" id="prevBtn" onclick="prevQ()">Previous</button>
+  <button class="btn" id="nextBtn" onclick="nextQ()">Next</button>
+  <button class="btn" id="submitBtn" onclick="submitTest()" style="background:#008722;">Submit</button>
+</div>
+
+<div class="container" id="resultBox">
+  <h2>🎉 Test Completed!</h2>
+  <p id="scoreText"></p>
+</div>
+
+<script>
+const questions = [
+  {q:"1. Choose the correct synonym of 'Brilliant'.",a:["Dull","Intelligent","Weak","Lazy"],c:1},
+  {q:"2. Choose the antonym of ‘Truth’.",a:["Fact","Lie","Honest","Clear"],c:1},
+  {q:"3. Identify the correctly spelled word.",a:["Enviroment","Environment","Environmant","Envaironment"],c:1},
+  {q:"4. Fill in the blank: She _____ to school every day.",a:["go","goes","gone","going"],c:1},
+  {q:"5. Choose the correct passive form: 'He writes a letter.'",a:["A letter wrote by him","A letter is written by him","A letter was written","He is writing a letter"],c:1},
+  {q:"6. Choose the correct article: He is _____ honest man.",a:["a","an","the","no article"],c:1},
+  {q:"7. Find the correct tense: They _____ here since morning.",a:["are","were","have been","will be"],c:2},
+  {q:"8. Fill in the blank: I prefer tea _____ coffee.",a:["than","on","to","with"],c:2},
+  {q:"9. Choose the correct synonym of 'Calm'.",a:["Quiet","Angry","Fast","Loud"],c:0},
+  {q:"10. Choose the antonym of 'Bright'.",a:["Shiny","Dim","Colourful","Big"],c:1},
+  
+  {q:"11. Choose the correct sentence.",a:["She do not know.","She does not knows.","She does not know.","She does knew."],c:2},
+  {q:"12. Choose the correct preposition: He is good _____ maths.",a:["in","at","for","on"],c:1},
+  {q:"13. Choose the correct modal verb: You _____ obey rules.",a:["should","may","might","would"],c:0},
+  {q:"14. Choose the correct voice: 'I can solve this.'",a:["This can solved by me.","This can be solved by me.","This solved by me.","This was solved."],c:1},
+  {q:"15. Choose the correct indirect speech: He said, 'I am happy.'",a:["He said that he was happy.","He said that he is happy.","He says he happy.","He told he was happy."],c:0},
+
+  {q:"16. Choose the correct synonym of 'Rapid'.",a:["Slow","Fast","Hard","Late"],c:1},
+  {q:"17. Antonym of ‘Success’.",a:["Goal","Victory","Failure","Top"],c:2},
+  {q:"18. Fill the blank: She is junior _____ me.",a:["from","to","with","than"],c:1},
+  {q:"19. Choose the correct phrase: 'Kick the bucket' means…",a:["To die","To rest","To jump","To run"],c:0},
+  {q:"20. Choose the correct option: The book _____ on the table.",a:["is","are","be","been"],c:0},
+
+  {q:"21. Choose the correct conjunction: I was tired _____ I slept early.",a:["so","but","because","and"],c:0},
+  {q:"22. Fill in the blank: He is senior _____ me.",a:["than","from","to","with"],c:2},
+  {q:"23. Choose the correct synonym of 'Brave'.",a:["Coward","Fearful","Courageous","Weak"],c:2},
+  {q:"24. Choose the correct antonym of 'Start'.",a:["Begin","Open","Finish","Rise"],c:2},
+  {q:"25. Identify the correct form: She enjoyed _____ the song.",a:["sing","sang","sung","singing"],c:3},
+
+  {q:"26. Choose the correct sentence.",a:["He don't know.","He doesn't knows.","He doesn't know.","He don't knows."],c:2},
+  {q:"27. Choose the correct preposition: The cat is hiding _____ the table.",a:["in","under","on","near"],c:1},
+  {q:"28. Fill in the blank: India is known _____ its culture.",a:["of","by","for","with"],c:2},
+  {q:"29. Find the correct meaning: ‘Once in a blue moon’.",a:["Always","Very rarely","Never","Often"],c:1},
+  {q:"30. Choose the correct article: He is _____ best player.",a:["a","an","the","no article"],c:2}
+];
+
+let index = 0;
+let answers = Array(questions.length).fill(null);
+
+function loadQ() {
+  document.getElementById("qNo").innerText = "Question " + (index+1) + " of 30";
+  document.getElementById("question").innerText = questions[index].q;
+
+  let optsHTML = "";
+  questions[index].a.forEach((opt,i)=>{
+      optsHTML += `<div class="option">
+          <input type="radio" name="opt" value="${i}" ${answers[index]===i?"checked":""}>
+          ${opt}
+        </div>`;
+  });
+  document.getElementById("options").innerHTML = optsHTML;
+
+  document.getElementById("prevBtn").disabled = index===0;
+  document.getElementById("nextBtn").disabled = index===29;
+}
+
+function nextQ(){
+  saveAns();
+  if(index < 29){ index++; loadQ(); }
+}
+
+function prevQ(){
+  saveAns();
+  if(index > 0){ index--; loadQ(); }
+}
+
+function saveAns(){
+  let opt = document.querySelector("input[name='opt']:checked");
+  answers[index] = opt ? parseInt(opt.value) : null;
+}
+
+function submitTest(){
+  saveAns();
+  let score = 0;
+  questions.forEach((q,i)=>{ if(q.c === answers[i]) score++; });
+
+  document.getElementById("scoreText").innerHTML =
+    `Your Score: <b>${score}</b> out of <b>30</b>`;
+
+  document.getElementById("resultBox").style.display = "block";
+  window.scrollTo(0,document.body.scrollHeight);
+}
+
+
+// TIMER 30 minutes
+let timeLeft = 30 * 60;
+setInterval(()=>{
+  let m = Math.floor(timeLeft/60);
+  let s = timeLeft % 60;
+  document.getElementById("time").innerText = `${m}:${s<10?'0'+s:s}`;
+  if(timeLeft>0) timeLeft--;
+  else submitTest();
+},1000);
+
+loadQ();
+</script>
+
+</body>
+</html>

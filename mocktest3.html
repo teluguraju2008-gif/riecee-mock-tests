@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mock Test 3 - Teaching Aptitude</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #0057b7;
+      color: white;
+      padding: 16px;
+      text-align: center;
+    }
+    #timer {
+      font-size: 18px;
+      font-weight: bold;
+      background: #003f87;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+    .container {
+      max-width: 700px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .btn {
+      background: #0057b7;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      margin: 10px 4px;
+    }
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .option {
+      padding: 10px;
+      background: #f0f4ff;
+      border-radius: 8px;
+      margin: 8px 0;
+    }
+    #resultBox {
+      display: none;
+      padding: 20px;
+      background: #e8ffe6;
+      border: 2px solid #21a421;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h2>Mock Test 3 – Teaching Aptitude</h2>
+</header>
+
+<div id="timer">Time Left: <span id="time">30:00</span></div>
+
+<div class="container">
+  <h3 id="qNo"></h3>
+  <p id="question"></p>
+
+  <div id="options"></div>
+
+  <button class="btn" id="prevBtn" onclick="prevQ()">Previous</button>
+  <button class="btn" id="nextBtn" onclick="nextQ()">Next</button>
+  <button class="btn" id="submitBtn" onclick="submitTest()" style="background:#008722;">Submit</button>
+</div>
+
+<div class="container" id="resultBox">
+  <h2>🎉 Test Completed!</h2>
+  <p id="scoreText"></p>
+</div>
+
+<script>
+const questions = [
+  {q:"1. Teaching is primarily a process of…",a:["Communication","Manipulation","Punishment","Ordering"],c:0},
+  {q:"2. The most effective method of teaching is…",a:["Lecture","Discussion","Dictation","Reading"],c:1},
+  {q:"3. A good teacher must be…",a:["Strict","Friendly","Careless","Silent"],c:1},
+  {q:"4. The main objective of classroom teaching is…",a:["Marks","Competition","Learning","Punishment"],c:2},
+  {q:"5. Micro-teaching focuses on…",a:["Full class","Small skills","Projects","Exams"],c:1},
+  {q:"6. A teacher evaluates students to…",a:["Punish them","Know their progress","Parents pressure","Time pass"],c:1},
+  {q:"7. Democratic teaching promotes…",a:["Fear","Participation","Silence","Punishment"],c:1},
+  {q:"8. Which is the best quality of a teacher?",a:["Arrogance","Patience","Anger","Ego"],c:1},
+  {q:"9. Teaching-learning process is…",a:["One-way","Two-way","No-way","None"],c:1},
+  {q:"10. Blackboard is a…",a:["Device","Visual aid","Audio aid","Test tool"],c:1},
+  {q:"11. Lesson plan is prepared for…",a:["Students","Parents","Teachers","None"],c:2},
+  {q:"12. A slow learner needs…",a:["Extra attention","Punishment","Ignoring","Fast teaching"],c:0},
+  {q:"13. Student-centered teaching focuses on…",a:["Teacher","Learner","Admins","Parents"],c:1},
+  {q:"14. Teaching aptitude means…",a:["Teaching ability","Writing ability","Cooking ability","Driving"],c:0},
+  {q:"15. A good question paper should be…",a:["Lengthy","Balanced","Tricky","Confusing"],c:1},
+  {q:"16. Classroom management aims at…",a:["Punishment","Discipline","Noise","Fights"],c:1},
+  {q:"17. Remedial teaching is for…",a:["Slow learners","Toppers","Teachers","Parents"],c:0},
+  {q:"18. CTET, TET are examples of…",a:["Sports tests","Teaching exams","Army tests","Bank exams"],c:1},
+  {q:"19. Teaching aids make learning…",a:["Boring","Easy","Difficult","Slow"],c:1},
+  {q:"20. The first step of learning is…",a:["Motivation","Homework","Exam","Punishment"],c:0},
+  {q:"21. Body language is part of…",a:["Non-verbal communication","Writing","Reading","Sleeping"],c:0},
+  {q:"22. Teachers should avoid…",a:["Encouragement","Bias","Motivation","Support"],c:1},
+  {q:"23. The best way to motivate students is…",a:["Pressure","Rewards","Comparison","Fear"],c:1},
+  {q:"24. Inclusive education supports…",a:["Only toppers","All students","Only rich","None"],c:1},
+  {q:"25. Good classroom questioning should be…",a:["Clear","Confusing","Fast","Funny"],c:0},
+  {q:"26. Formative assessment is done…",a:["After course","During learning","Before class","Never"],c:1},
+  {q:"27. A good teacher listens…",a:["Less","More","Never","Only to toppers"],c:1},
+  {q:"28. Teaching is successful when…",a:["Students learn","Teacher shouts","Class is silent","Books are new"],c:0},
+  {q:"29. Educational psychology helps teachers understand…",a:["Animals","Students","Cars","Plants"],c:1},
+  {q:"30. A teacher should be a…",a:["Guide","Boss","Customer","Follower"],c:0}
+];
+
+let index = 0;
+let answers = Array(questions.length).fill(null);
+
+function loadQ() {
+  document.getElementById("qNo").innerText = "Question " + (index+1) + " of 30";
+  document.getElementById("question").innerText = questions[index].q;
+
+  let optsHTML = "";
+  questions[index].a.forEach((opt,i)=>{
+      optsHTML += `<div class="option">
+          <input type="radio" name="opt" value="${i}" ${answers[index]===i?"checked":""}>
+          ${opt}
+        </div>`;
+  });
+  document.getElementById("options").innerHTML = optsHTML;
+
+  document.getElementById("prevBtn").disabled = index===0;
+  document.getElementById("nextBtn").disabled = index===29;
+}
+
+function nextQ(){
+  saveAns();
+  if(index < 29){ index++; loadQ(); }
+}
+
+function prevQ(){
+  saveAns();
+  if(index > 0){ index--; loadQ(); }
+}
+
+function saveAns(){
+  let opt = document.querySelector("input[name='opt']:checked");
+  answers[index] = opt ? parseInt(opt.value) : null;
+}
+
+function submitTest(){
+  saveAns();
+  let score = 0;
+  questions.forEach((q,i)=>{ if(q.c === answers[i]) score++; });
+
+  document.getElementById("scoreText").innerHTML =
+    `Your Score: <b>${score}</b> out of <b>30</b>`;
+
+  document.getElementById("resultBox").style.display = "block";
+  window.scrollTo(0,document.body.scrollHeight);
+}
+
+
+// TIMER 30 minutes
+let timeLeft = 30 * 60;
+setInterval(()=>{
+  let m = Math.floor(timeLeft/60);
+  let s = timeLeft % 60;
+  document.getElementById("time").innerText = `${m}:${s<10?'0'+s:s}`;
+  if(timeLeft>0) timeLeft--;
+  else submitTest();
+},1000);
+
+loadQ();
+</script>
+
+</body>
+</html>

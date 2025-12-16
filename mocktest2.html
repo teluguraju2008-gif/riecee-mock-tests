@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mock Test 2 – Reasoning Ability | RIE CEE 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f9;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 750px;
+        margin: auto;
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        color: #0057b7;
+        text-align: center;
+    }
+
+    .question-box {
+        margin-top: 20px;
+    }
+
+    .options label {
+        display: block;
+        margin: 8px 0;
+        padding: 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        background: #eef3ff;
+    }
+
+    .navigation {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    button {
+        padding: 10px 18px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        background: #0057b7;
+        color: white;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #003f87;
+    }
+
+    #result {
+        margin-top: 20px;
+        font-size: 22px;
+        text-align: center;
+        color: #0057b7;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Mock Test 2 – Reasoning Ability (30 Questions)</h2>
+
+    <div id="question-area"></div>
+
+    <div class="navigation">
+        <button onclick="prevQuestion()">Previous</button>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div style="text-align:center; margin-top: 25px;">
+        <button onclick="submitTest()">Submit Test</button>
+    </div>
+
+    <p id="result"></p>
+</div>
+
+<script>
+const quizData = [
+    {q:"1. Find the odd one out:", a:"Pen", b:"Pencil", c:"Eraser", d:"Sharpener", correct:"a"},
+    {q:"2. If 2 = 6, 3 = 12, 4 = 20, then 5 = ?", a:"25", b:"30", c:"35", d:"40", correct:"b"},
+    {q:"3. Which is the next number? 5, 10, 20, 40, ?", a:"60", b:"70", c:"80", d:"100", correct:"c"},
+    {q:"4. A boy is 12th from the left and 15th from the right. Total students?", a:"25", b:"26", c:"27", d:"28", correct:"c"},
+    {q:"5. Which shape is different?", a:"Square", b:"Circle", c:"Triangle", d:"Rectangle", correct:"b"},
+    {q:"6. If CAT = 3120, BAT = ?", a:"2120", b:"3120", c:"2140", d:"1120", correct:"a"},
+    {q:"7. Choose the odd number: 3, 5, 7, 8", a:"3", b:"7", c:"8", d:"5", correct:"c"},
+    {q:"8. Which one comes next? A, C, E, G, ?", a:"H", b:"I", c:"J", d:"K", correct:"b"},
+    {q:"9. If ‘Sun’ is ‘Rain’, ‘Rain’ is ‘Cloud’, then what gives water?", a:"Sun", b:"Rain", c:"Cloud", d:"Sky", correct:"b"},
+    {q:"10. 10, 20, 40, 80, ?", a:"100", b:"120", c:"140", d:"160", correct:"d"},
+    {q:"11. Odd one out: Mango, Apple, Banana, Potato", a:"Mango", b:"Banana", c:"Potato", d:"Apple", correct:"c"},
+    {q:"12. 6 : 36 :: 7 : ?", a:"42", b:"48", c:"49", d:"56", correct:"d"},
+    {q:"13. V, S, P, M, ?", a:"K", b:"H", c:"F", d:"J", correct:"b"},
+    {q:"14. If A = 1, C = 3, F = 6 then I = ?", a:"8", b:"9", c:"10", d:"11", correct:"b"},
+    {q:"15. Complete: 12, 24, 48, 96, ?", a:"120", b:"144", c:"192", d:"200", correct:"c"},
+    {q:"16. If 9 = 81, 8 = 64, 7 = 49 then 6 = ?", a:"36", b:"42", c:"30", d:"48", correct:"a"},
+    {q:"17. Odd one: Lion, Tiger, Elephant, Dog", a:"Lion", b:"Elephant", c:"Dog", d:"Tiger", correct:"c"},
+    {q:"18. If NORTH → SORTH, what is SOUTH?", a:"TOUTH", b:"SOUTH", c:"POUTH", d:"ROUTH", correct:"a"},
+    {q:"19. 3, 6, 9, 12, ?", a:"15", b:"16", c:"17", d:"18", correct:"a"},
+    {q:"20. Opposite of ‘Up’?", a:"Right", b:"Down", c:"Left", d:"Front", correct:"b"},
+    {q:"21. Find the odd number: 11, 13, 17, 21", a:"11", b:"13", c:"17", d:"21", correct:"d"},
+    {q:"22. 2 : 8 :: 4 : ?", a:"12", b:"16", c:"18", d:"20", correct:"b"},
+    {q:"23. Which is different?: Square, Cube, Triangle, Circle", a:"Square", b:"Cube", c:"Triangle", d:"Circle", correct:"b"},
+    {q:"24. Next: 2, 4, 8, 16, ?", a:"20", b:"24", c:"32", d:"28", correct:"c"},
+    {q:"25. If TREE → FREE, then STAR → ?", a:"FAR", b:"STAR", c:"FRAR", d:"STAF", correct:"a"},
+    {q:"26. Odd one: Monday, Tuesday, Sunday, January", a:"Monday", b:"Sunday", c:"January", d:"Tuesday", correct:"c"},
+    {q:"27. If 4 = 16, 5 = 25, then 8 = ?", a:"32", b:"64", c:"72", d:"88", correct:"b"},
+    {q:"28. 14, 28, 56, ?, 224", a:"84", b:"96", c:"112", d:"128", correct:"c"},
+    {q:"29. Odd one: Dog, Cat, Cow, Book", a:"Dog", b:"Cat", c:"Cow", d:"Book", correct:"d"},
+    {q:"30. 100 : 10 :: 64 : ?", a:"4", b:"6", c:"8", d:"12", correct:"c"}
+];
+
+let currentQ = 0;
+let answers = {};
+
+function loadQuestion() {
+    const q = quizData[currentQ];
+    let html = `
+        <div class="question-box">
+            <h3>${q.q}</h3>
+            <div class="options">
+                <label><input type="radio" name="opt" value="a"> ${q.a}</label>
+                <label><input type="radio" name="opt" value="b"> ${q.b}</label>
+                <label><input type="radio" name="opt" value="c"> ${q.c}</label>
+                <label><input type="radio" name="opt" value="d"> ${q.d}</label>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("question-area").innerHTML = html;
+
+    if (answers[currentQ]) {
+        document.querySelector(`input[value="${answers[currentQ]}"]`).checked = true;
+    }
+}
+
+function nextQuestion() {
+    saveAnswer();
+    if (currentQ < quizData.length - 1) {
+        currentQ++;
+        loadQuestion();
+    }
+}
+
+function prevQuestion() {
+    saveAnswer();
+    if (currentQ > 0) {
+        currentQ--;
+        loadQuestion();
+    }
+}
+
+function saveAnswer() {
+    let opt = document.querySelector("input[name='opt']:checked");
+    if (opt) answers[currentQ] = opt.value;
+}
+
+function submitTest() {
+    saveAnswer();
+    let score = 0;
+    quizData.forEach((q, i) => {
+        if (answers[i] === q.correct) score++;
+    });
+    document.getElementById("result").innerText = `Your Score: ${score} / 30`;
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
